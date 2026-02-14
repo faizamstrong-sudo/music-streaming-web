@@ -5,6 +5,7 @@ const path = require('path');
 // Import routes
 const songsRoutes = require('./routes/songs');
 const streamRoutes = require('./routes/stream');
+const lyricsRoutes = require('./routes/lyrics');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -35,6 +36,7 @@ app.get('/health', (req, res) => {
 // API Routes
 app.use('/api/songs', songsRoutes);
 app.use('/api/stream', streamRoutes);
+app.use('/api/lyrics', lyricsRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
