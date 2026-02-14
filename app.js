@@ -175,10 +175,10 @@ function setTheme(theme) {
     const themeText = document.getElementById('theme-text');
     
     if (theme === 'dark') {
-        themeIcon.textContent = '🌙';
+        themeIcon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
         themeText.textContent = 'Dark Mode';
     } else {
-        themeIcon.textContent = '☀️';
+        themeIcon.innerHTML = '<circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
         themeText.textContent = 'Light Mode';
     }
 }
@@ -233,7 +233,7 @@ async function fetchTopTracks(tag = '', limit = 12) {
                 id: `${track.artist.name}-${track.name}`.replace(/\s/g, '-').toLowerCase(),
                 title: track.name,
                 artist: track.artist.name,
-                cover: track.image[2]['#text'] || '🎵',
+                cover: track.image[2]['#text'] || '',
                 duration: 210, // Default duration
                 url: null // Will be populated when playing
             }));
@@ -262,7 +262,7 @@ async function searchLastFM(query) {
                 id: `${track.artist}-${track.name}`.replace(/\s/g, '-').toLowerCase(),
                 title: track.name,
                 artist: track.artist,
-                cover: track.image && track.image[2] ? track.image[2]['#text'] : '🎵',
+                cover: track.image && track.image[2] ? track.image[2]['#text'] : '',
                 duration: 210,
                 url: null
             }));
@@ -288,12 +288,12 @@ async function loadIndonesianSongs() {
     
     // Create sample Indonesian songs
     const indonesianSongs = [
-        { id: 'indo-1', title: 'Seperti Bintang', artist: 'Afgan', cover: '🎵', duration: 210, url: null },
-        { id: 'indo-2', title: 'Akad', artist: 'Payung Teduh', cover: '🎵', duration: 245, url: null },
-        { id: 'indo-3', title: 'Surat Cinta untuk Starla', artist: 'Virgoun', cover: '🎵', duration: 280, url: null },
-        { id: 'indo-4', title: 'Mungkin Hari Ini', artist: 'Anneth', cover: '🎵', duration: 195, url: null },
-        { id: 'indo-5', title: 'Lathi', artist: 'Weird Genius ft. Sara Fajira', cover: '🎵', duration: 200, url: null },
-        { id: 'indo-6', title: 'Bertaut', artist: 'Nadin Amizah', cover: '🎵', duration: 220, url: null }
+        { id: 'indo-1', title: 'Seperti Bintang', artist: 'Afgan', cover: '', duration: 210, url: null },
+        { id: 'indo-2', title: 'Akad', artist: 'Payung Teduh', cover: '', duration: 245, url: null },
+        { id: 'indo-3', title: 'Surat Cinta untuk Starla', artist: 'Virgoun', cover: '', duration: 280, url: null },
+        { id: 'indo-4', title: 'Mungkin Hari Ini', artist: 'Anneth', cover: '', duration: 195, url: null },
+        { id: 'indo-5', title: 'Lathi', artist: 'Weird Genius ft. Sara Fajira', cover: '', duration: 200, url: null },
+        { id: 'indo-6', title: 'Bertaut', artist: 'Nadin Amizah', cover: '', duration: 220, url: null }
     ];
     
     renderSongGrid(indonesianSongs, container);
@@ -314,7 +314,9 @@ function renderSongGrid(songs, container) {
     if (!songs || songs.length === 0) {
         container.innerHTML = `
             <div class="empty-state">
-                <div class="empty-state-icon">🎵</div>
+                <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 18V5L21 12L9 19V18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
                 <p class="empty-state-text">No songs available</p>
             </div>
         `;
@@ -324,11 +326,15 @@ function renderSongGrid(songs, container) {
     container.innerHTML = songs.map(song => `
         <div class="song-card" data-song='${JSON.stringify(song).replace(/'/g, "&apos;")}'>
             <div class="song-cover">
-                ${song.cover.startsWith('http') 
+                ${song.cover && song.cover.startsWith('http') 
                     ? `<img src="${song.cover}" alt="${song.title}">` 
-                    : song.cover}
+                    : `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 18V5L21 12L9 19V18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>`}
                 <div class="play-button-overlay" onclick="playSong(this.closest('.song-card'))">
-                    ▶️
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="5 3 19 12 5 21 5 3" fill="currentColor"/>
+                    </svg>
                 </div>
             </div>
             <div class="song-info">
@@ -348,7 +354,9 @@ function renderPlaylists() {
         if (userPlaylists) {
             userPlaylists.innerHTML = `
                 <div class="empty-state">
-                    <div class="empty-state-icon">📁</div>
+                    <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22 19C22 19.5304 21.7893 20.0391 21.4142 20.4142C21.0391 20.7893 20.5304 21 20 21H4C3.46957 21 2.96086 20.7893 2.58579 20.4142C2.21071 20.0391 2 19.5304 2 19V5C2 4.46957 2.21071 3.96086 2.58579 3.58579C2.96086 3.21071 3.46957 3 4 3H9L11 6H20C20.5304 6 21.0391 6.21071 21.4142 6.58579C21.7893 6.96086 22 7.46957 22 8V19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
                     <h3 class="empty-state-title">No playlists yet</h3>
                     <p class="empty-state-text">Create your first playlist to get started</p>
                 </div>
@@ -359,7 +367,9 @@ function renderPlaylists() {
     
     const playlistHTML = state.playlists.map(playlist => `
         <a href="#playlist-${playlist.id}" class="sidebar-item" onclick="viewPlaylist('${playlist.id}')">
-            <span class="sidebar-icon">🎵</span>
+            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 18V5L21 12L9 19V18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
             <span>${playlist.name}</span>
         </a>
     `).join('');
@@ -369,7 +379,11 @@ function renderPlaylists() {
     if (userPlaylists) {
         userPlaylists.innerHTML = state.playlists.map(playlist => `
             <div class="playlist-card" onclick="viewPlaylist('${playlist.id}')">
-                <div class="playlist-cover">🎵</div>
+                <div class="playlist-cover">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 18V5L21 12L9 19V18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
                 <div class="playlist-info">
                     <h3>${playlist.name}</h3>
                     <p>${playlist.songs.length} songs</p>
@@ -385,7 +399,9 @@ function renderLibrary() {
     if (state.recentlyPlayed.length === 0) {
         recentlyPlayedContainer.innerHTML = `
             <div class="empty-state">
-                <div class="empty-state-icon">🎵</div>
+                <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 18V5L21 12L9 19V18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
                 <p class="empty-state-text">No recently played songs</p>
             </div>
         `;
@@ -402,7 +418,9 @@ function renderLikedSongs() {
     if (state.likedSongs.length === 0) {
         likedSongsContainer.innerHTML = `
             <div class="empty-state">
-                <div class="empty-state-icon">❤️</div>
+                <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20.84 4.61C20.3292 4.09935 19.7228 3.69627 19.0554 3.42513C18.3879 3.15398 17.6725 3.01998 16.95 3.03C16.2275 3.04002 15.5164 3.19418 14.8563 3.48364C14.1963 3.7731 13.6001 4.19217 13.1 4.72L12 5.82L10.9 4.72C9.86963 3.68963 8.49077 3.1113 7.05 3.1113C5.60923 3.1113 4.23037 3.68963 3.2 4.72C2.16963 5.75037 1.5913 7.12923 1.5913 8.57C1.5913 10.0108 2.16963 11.3896 3.2 12.42L12 21.22L20.8 12.42C21.3106 11.9092 21.7137 11.3028 21.9849 10.6354C22.256 9.96789 22.39 9.25249 22.38 8.53C22.37 7.80751 22.2158 7.09639 21.9264 6.43637C21.6369 5.77635 21.2178 5.18013 20.69 4.67L20.84 4.61Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
                 <h3 class="empty-state-title">No liked songs yet</h3>
                 <p class="empty-state-text">Songs you like will appear here</p>
             </div>
@@ -418,7 +436,11 @@ function renderQueue() {
     if (state.queue.length === 0 || state.currentQueueIndex === state.queue.length - 1) {
         queueList.innerHTML = `
             <div class="empty-state">
-                <div class="empty-state-icon">📃</div>
+                <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="8" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="8" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="8" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
                 <p class="empty-state-text">Queue is empty</p>
             </div>
         `;
@@ -430,9 +452,11 @@ function renderQueue() {
     queueList.innerHTML = upcomingSongs.map((song, index) => `
         <div class="queue-item" onclick="playFromQueue(${state.currentQueueIndex + 1 + index})">
             <div class="queue-item-cover">
-                ${song.cover.startsWith('http') 
+                ${song.cover && song.cover.startsWith('http') 
                     ? `<img src="${song.cover}" alt="${song.title}">` 
-                    : song.cover}
+                    : `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 18V5L21 12L9 19V18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>`}
             </div>
             <div class="queue-item-info">
                 <div class="queue-item-title">${song.title}</div>
@@ -634,16 +658,26 @@ function toggleRepeat() {
     if (state.repeat === false) {
         state.repeat = 'all';
         repeatBtn.classList.add('active');
-        repeatBtn.textContent = '🔁';
         showNotification('Repeat all enabled');
     } else if (state.repeat === 'all') {
         state.repeat = 'one';
-        repeatBtn.textContent = '🔂';
+        repeatBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polyline points="17 1 21 5 17 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 11V9C3 7.93913 3.42143 6.92172 4.17157 6.17157C4.92172 5.42143 5.93913 5 7 5H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="7 23 3 19 7 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M21 13V15C21 16.0609 20.5786 17.0783 19.8284 17.8284C19.0783 18.5786 18.0609 19 17 19H3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <text x="12" y="15" text-anchor="middle" font-size="10" fill="currentColor">1</text>
+        </svg>`;
         showNotification('Repeat one enabled');
     } else {
         state.repeat = false;
         repeatBtn.classList.remove('active');
-        repeatBtn.textContent = '🔁';
+        repeatBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polyline points="17 1 21 5 17 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 11V9C3 7.93913 3.42143 6.92172 4.17157 6.17157C4.92172 5.42143 5.93913 5 7 5H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="7 23 3 19 7 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M21 13V15C21 16.0609 20.5786 17.0783 19.8284 17.8284C19.0783 18.5786 18.0609 19 17 19H3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>`;
         showNotification('Repeat disabled');
     }
 }
@@ -664,23 +698,38 @@ function updatePlayerUI() {
     const playPauseBtn = document.getElementById('play-pause-btn');
     
     if (!state.currentTrack) {
-        playPauseBtn.textContent = '▶️';
+        playPauseBtn.innerHTML = `<svg class="play-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="5 3 19 12 5 21 5 3" fill="currentColor"/>
+        </svg>`;
         document.getElementById('player-title').textContent = 'No track selected';
         document.getElementById('player-artist').textContent = 'Artist';
-        document.getElementById('player-cover').innerHTML = '🎵';
+        document.getElementById('player-cover').innerHTML = `<svg class="default-track-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 18V5L21 12L9 19V18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>`;
         return;
     }
     
-    playPauseBtn.textContent = state.isPlaying ? '⏸️' : '▶️';
+    if (state.isPlaying) {
+        playPauseBtn.innerHTML = `<svg class="play-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="6" y="4" width="4" height="16" fill="currentColor"/>
+            <rect x="14" y="4" width="4" height="16" fill="currentColor"/>
+        </svg>`;
+    } else {
+        playPauseBtn.innerHTML = `<svg class="play-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="5 3 19 12 5 21 5 3" fill="currentColor"/>
+        </svg>`;
+    }
     
     document.getElementById('player-title').textContent = state.currentTrack.title;
     document.getElementById('player-artist').textContent = state.currentTrack.artist;
     
     const playerCover = document.getElementById('player-cover');
-    if (state.currentTrack.cover.startsWith('http')) {
+    if (state.currentTrack.cover && state.currentTrack.cover.startsWith('http')) {
         playerCover.innerHTML = `<img src="${state.currentTrack.cover}" alt="${state.currentTrack.title}">`;
     } else {
-        playerCover.innerHTML = state.currentTrack.cover;
+        playerCover.innerHTML = `<svg class="default-track-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 18V5L21 12L9 19V18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>`;
     }
 }
 
@@ -691,10 +740,12 @@ function updateNowPlayingUI() {
     document.getElementById('now-playing-artist').textContent = state.currentTrack.artist;
     
     const nowPlayingArt = document.getElementById('now-playing-art');
-    if (state.currentTrack.cover.startsWith('http')) {
+    if (state.currentTrack.cover && state.currentTrack.cover.startsWith('http')) {
         nowPlayingArt.innerHTML = `<img src="${state.currentTrack.cover}" alt="${state.currentTrack.title}">`;
     } else {
-        nowPlayingArt.innerHTML = state.currentTrack.cover;
+        nowPlayingArt.innerHTML = `<svg class="default-track-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 18V5L21 12L9 19V18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>`;
     }
     
     renderQueue();
@@ -756,11 +807,16 @@ function updateVolumeUI() {
     volumeFill.style.width = `${volume * 100}%`;
     
     if (volume === 0) {
-        volumeIcon.textContent = '🔇';
+        volumeIcon.innerHTML = `<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="23" y1="9" x2="17" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="17" y1="9" x2="23" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
     } else if (volume < 0.5) {
-        volumeIcon.textContent = '🔉';
+        volumeIcon.innerHTML = `<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M15.54 8.46C16.4774 9.39764 17.004 10.6692 17.004 11.995C17.004 13.3208 16.4774 14.5924 15.54 15.53" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
     } else {
-        volumeIcon.textContent = '🔊';
+        volumeIcon.innerHTML = `<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M15.54 8.46C16.4774 9.39764 17.004 10.6692 17.004 11.995C17.004 13.3208 16.4774 14.5924 15.54 15.53" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M19.07 4.93C20.9447 6.80528 21.9979 9.34836 21.9979 12C21.9979 14.6516 20.9447 17.1947 19.07 19.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
     }
 }
 
@@ -773,7 +829,9 @@ async function searchSongs(query) {
     if (!query.trim()) {
         resultsContainer.innerHTML = `
             <div class="empty-state">
-                <div class="empty-state-icon">🎵</div>
+                <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 18V5L21 12L9 19V18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
                 <h3 class="empty-state-title">Search for music</h3>
                 <p class="empty-state-text">Find your favorite songs and artists</p>
             </div>
@@ -788,7 +846,10 @@ async function searchSongs(query) {
     if (results.length === 0) {
         resultsContainer.innerHTML = `
             <div class="empty-state">
-                <div class="empty-state-icon">🔍</div>
+                <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
                 <h3 class="empty-state-title">No results found</h3>
                 <p class="empty-state-text">Try searching with different keywords</p>
             </div>

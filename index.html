@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music Streaming - Your Favorite Tunes</title>
+    <title>FASHIN Play - Your Music Streaming Platform</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -11,17 +11,34 @@
     <div class="app-container">
         <!-- Left Sidebar -->
         <aside class="sidebar">
+            <div class="sidebar-logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                    <path d="M12 22V12" stroke="currentColor" stroke-width="2"/>
+                    <path d="M12 12L2 7" stroke="currentColor" stroke-width="2"/>
+                    <path d="M12 12L22 7" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <span class="logo-text">FASHIN Play</span>
+            </div>
             <div class="sidebar-section">
                 <a href="#home" class="sidebar-item active" data-view="home">
-                    <span class="sidebar-icon">🏠</span>
+                    <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M9 22V12H15V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
                     <span>Home</span>
                 </a>
                 <a href="#search" class="sidebar-item" data-view="search">
-                    <span class="sidebar-icon">🔍</span>
+                    <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
                     <span>Search</span>
                 </a>
                 <a href="#library" class="sidebar-item" data-view="library">
-                    <span class="sidebar-icon">📚</span>
+                    <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22 19C22 19.5304 21.7893 20.0391 21.4142 20.4142C21.0391 20.7893 20.5304 21 20 21H4C3.46957 21 2.96086 20.7893 2.58579 20.4142C2.21071 20.0391 2 19.5304 2 19V5C2 4.46957 2.21071 3.96086 2.58579 3.58579C2.96086 3.21071 3.46957 3 4 3H9L11 6H20C20.5304 6 21.0391 6.21071 21.4142 6.58579C21.7893 6.96086 22 7.46957 22 8V19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
                     <span>Your Library</span>
                 </a>
             </div>
@@ -29,18 +46,25 @@
             <div class="sidebar-section">
                 <div class="sidebar-title">Playlists</div>
                 <a href="#create-playlist" class="sidebar-item" id="create-playlist-btn">
-                    <span class="sidebar-icon">➕</span>
+                    <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
                     <span>Create Playlist</span>
                 </a>
                 <a href="#liked" class="sidebar-item" data-view="liked">
-                    <span class="sidebar-icon">❤️</span>
+                    <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20.84 4.61C20.3292 4.09935 19.7228 3.69627 19.0554 3.42513C18.3879 3.15398 17.6725 3.01998 16.95 3.03C16.2275 3.04002 15.5164 3.19418 14.8563 3.48364C14.1963 3.7731 13.6001 4.19217 13.1 4.72L12 5.82L10.9 4.72C9.86963 3.68963 8.49077 3.1113 7.05 3.1113C5.60923 3.1113 4.23037 3.68963 3.2 4.72C2.16963 5.75037 1.5913 7.12923 1.5913 8.57C1.5913 10.0108 2.16963 11.3896 3.2 12.42L12 21.22L20.8 12.42C21.3106 11.9092 21.7137 11.3028 21.9849 10.6354C22.256 9.96789 22.39 9.25249 22.38 8.53C22.37 7.80751 22.2158 7.09639 21.9264 6.43637C21.6369 5.77635 21.2178 5.18013 20.69 4.67L20.84 4.61Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
                     <span>Liked Songs</span>
                 </a>
                 <div id="playlist-list"></div>
             </div>
 
             <button class="theme-toggle" id="theme-toggle">
-                <span id="theme-icon">🌙</span>
+                <svg id="theme-icon" class="theme-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
                 <span id="theme-text">Dark Mode</span>
             </button>
         </aside>
@@ -80,14 +104,19 @@
                 <div class="main-header">
                     <h1>Search</h1>
                     <div class="search-container">
-                        <span class="search-icon">🔍</span>
+                        <svg class="search-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
                         <input type="text" class="search-input" id="search-input" placeholder="Search for songs, artists...">
                     </div>
                 </div>
 
                 <div id="search-results-container">
                     <div class="empty-state">
-                        <div class="empty-state-icon">🎵</div>
+                        <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 18V5L21 12L9 19V18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
                         <h3 class="empty-state-title">Search for music</h3>
                         <p class="empty-state-text">Find your favorite songs and artists</p>
                     </div>
@@ -138,7 +167,9 @@
             <div>
                 <h2 class="now-playing-header">Now Playing</h2>
                 <div class="current-track-art" id="now-playing-art">
-                    🎵
+                    <svg class="default-track-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 18V5L21 12L9 19V18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
                 </div>
                 <div class="current-track-info">
                     <h3 class="current-track-title" id="now-playing-title">No track playing</h3>
@@ -150,7 +181,14 @@
                 <h3 class="queue-title">Up Next</h3>
                 <div class="queue-list" id="queue-list">
                     <div class="empty-state">
-                        <div class="empty-state-icon">📃</div>
+                        <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="8" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <line x1="8" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <line x1="8" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <line x1="3" y1="6" x2="3.01" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <line x1="3" y1="12" x2="3.01" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <line x1="3" y1="18" x2="3.01" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
                         <p class="empty-state-text">Queue is empty</p>
                     </div>
                 </div>
@@ -162,7 +200,9 @@
             <!-- Track Info -->
             <div class="player-track-info">
                 <div class="player-track-cover" id="player-cover">
-                    🎵
+                    <svg class="default-track-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 18V5L21 12L9 19V18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
                 </div>
                 <div class="player-track-details">
                     <div class="player-track-title" id="player-title">No track selected</div>
@@ -174,19 +214,38 @@
             <div class="player-controls-center">
                 <div class="player-buttons">
                     <button class="player-btn" id="shuffle-btn" title="Shuffle">
-                        🔀
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M16 3H21V8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M4 20L21 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M21 16V21H16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M15 15L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M4 4L9 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
                     </button>
                     <button class="player-btn" id="prev-btn" title="Previous">
-                        ⏮️
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <polygon points="19 20 9 12 19 4 19 20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <line x1="5" y1="19" x2="5" y2="5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
                     </button>
                     <button class="player-btn play-pause-btn" id="play-pause-btn" title="Play">
-                        ▶️
+                        <svg class="play-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <polygon points="5 3 19 12 5 21 5 3" fill="currentColor"/>
+                        </svg>
                     </button>
                     <button class="player-btn" id="next-btn" title="Next">
-                        ⏭️
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <polygon points="5 4 15 12 5 20 5 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
                     </button>
                     <button class="player-btn" id="repeat-btn" title="Repeat">
-                        🔁
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <polyline points="17 1 21 5 17 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M3 11V9C3 7.93913 3.42143 6.92172 4.17157 6.17157C4.92172 5.42143 5.93913 5 7 5H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <polyline points="7 23 3 19 7 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M21 13V15C21 16.0609 20.5786 17.0783 19.8284 17.8284C19.0783 18.5786 18.0609 19 17 19H3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
                     </button>
                 </div>
                 <div class="progress-container">
@@ -201,7 +260,11 @@
             <!-- Right Controls -->
             <div class="player-right-controls">
                 <div class="volume-control">
-                    <span class="volume-icon" id="volume-icon">🔊</span>
+                    <svg class="volume-icon" id="volume-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M15.54 8.46C16.4774 9.39764 17.004 10.6692 17.004 11.995C17.004 13.3208 16.4774 14.5924 15.54 15.53" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M19.07 4.93C20.9447 6.80528 21.9979 9.34836 21.9979 12C21.9979 14.6516 20.9447 17.1947 19.07 19.07" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
                     <div class="volume-slider" id="volume-slider">
                         <div class="volume-fill" id="volume-fill"></div>
                     </div>
