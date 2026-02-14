@@ -134,15 +134,15 @@ router.post('/get-url', async (req, res) => {
             
             // Fallback to Deezer preview
             if (title && artist) {
-                const deezerResult = await deezer.searchTrack(`${title} ${artist}`);
+                const deezerResult = await deezer.searchTracks(`${title} ${artist}`, 1);
                 if (deezerResult.success && deezerResult.data && deezerResult.data.length > 0) {
                     const track = deezerResult.data[0];
                     const fallbackData = {
                         streamUrl: track.preview,
                         title: track.title,
-                        artist: track.artist.name,
+                        artist: track.artist,
                         duration: track.duration,
-                        thumbnail: track.album.cover_medium,
+                        thumbnail: track.cover ? track.cover.medium : null,
                         source: 'deezer',
                         message: '30-second preview only (rate limit exceeded)'
                     };
@@ -196,15 +196,15 @@ router.post('/get-url', async (req, res) => {
         console.log('[Stream] YouTube failed, falling back to Deezer');
         
         if (title && artist) {
-            const deezerResult = await deezer.searchTrack(`${title} ${artist}`);
+            const deezerResult = await deezer.searchTracks(`${title} ${artist}`, 1);
             if (deezerResult.success && deezerResult.data && deezerResult.data.length > 0) {
                 const track = deezerResult.data[0];
                 const fallbackData = {
                     streamUrl: track.preview,
                     title: track.title,
-                    artist: track.artist.name,
+                    artist: track.artist,
                     duration: track.duration,
-                    thumbnail: track.album.cover_medium,
+                    thumbnail: track.cover ? track.cover.medium : null,
                     source: 'deezer',
                     message: '30-second preview only (YouTube unavailable)'
                 };
