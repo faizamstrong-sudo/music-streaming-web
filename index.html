@@ -3,52 +3,238 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music Streaming Web Application</title>
+    <title>Music Streaming - Your Favorite Tunes</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <h1>Welcome to Your Music Streaming Service</h1>
-    </header>
-    <nav>
-        <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Browse</a></li>
-            <li><a href="#">Playlists</a></li>
-            <li><a href="#">Library</a></li>
-            <li><a href="#">Profile</a></li>
-        </ul>
-    </nav>
-    <main>
-        <section>
-            <h2>Featured Songs</h2>
-            <div class="song-list">
-                <!-- Sample song item -->
-                <div class="song-item">
-                    <h3>Song Title</h3>
-                    <p>Artist Name</p>
-                    <audio controls>
-                        <source src="path/to/song.mp3" type="audio/mpeg">
-                        Your browser does not support the audio element.
-                    </audio>
-                </div>
-                <!-- Add more songs similarly -->
+    <!-- Main App Container -->
+    <div class="app-container">
+        <!-- Left Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <a href="#home" class="sidebar-item active" data-view="home">
+                    <span class="sidebar-icon">🏠</span>
+                    <span>Home</span>
+                </a>
+                <a href="#search" class="sidebar-item" data-view="search">
+                    <span class="sidebar-icon">🔍</span>
+                    <span>Search</span>
+                </a>
+                <a href="#library" class="sidebar-item" data-view="library">
+                    <span class="sidebar-icon">📚</span>
+                    <span>Your Library</span>
+                </a>
             </div>
-        </section>
-        <section>
-            <h2>Your Playlists</h2>
-            <div class="playlist-list">
-                <!-- Sample playlist item -->
-                <div class="playlist-item">
-                    <h3>Playlist Name</h3>
-                    <p>Number of Songs: X</p>
-                </div>
-                <!-- Add more playlists similarly -->
+
+            <div class="sidebar-section">
+                <div class="sidebar-title">Playlists</div>
+                <a href="#create-playlist" class="sidebar-item" id="create-playlist-btn">
+                    <span class="sidebar-icon">➕</span>
+                    <span>Create Playlist</span>
+                </a>
+                <a href="#liked" class="sidebar-item" data-view="liked">
+                    <span class="sidebar-icon">❤️</span>
+                    <span>Liked Songs</span>
+                </a>
+                <div id="playlist-list"></div>
             </div>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2026 Music Streaming Service. All Rights Reserved.</p>
-    </footer>
+
+            <button class="theme-toggle" id="theme-toggle">
+                <span id="theme-icon">🌙</span>
+                <span id="theme-text">Dark Mode</span>
+            </button>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content" id="main-content">
+            <!-- Home View -->
+            <div id="home-view" class="view-content">
+                <div class="main-header">
+                    <h1>Welcome Back</h1>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">Featured Songs</h2>
+                    </div>
+                    <div class="song-grid" id="featured-songs"></div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">Indonesian Hits</h2>
+                    </div>
+                    <div class="song-grid" id="indonesian-songs"></div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">International Favorites</h2>
+                    </div>
+                    <div class="song-grid" id="international-songs"></div>
+                </div>
+            </div>
+
+            <!-- Search View -->
+            <div id="search-view" class="view-content hidden">
+                <div class="main-header">
+                    <h1>Search</h1>
+                    <div class="search-container">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" class="search-input" id="search-input" placeholder="Search for songs, artists...">
+                    </div>
+                </div>
+
+                <div id="search-results-container">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🎵</div>
+                        <h3 class="empty-state-title">Search for music</h3>
+                        <p class="empty-state-text">Find your favorite songs and artists</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Library View -->
+            <div id="library-view" class="view-content hidden">
+                <div class="main-header">
+                    <h1>Your Library</h1>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">Recently Played</h2>
+                    </div>
+                    <div class="song-grid" id="recently-played"></div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">Your Playlists</h2>
+                    </div>
+                    <div class="playlist-grid" id="user-playlists"></div>
+                </div>
+            </div>
+
+            <!-- Liked Songs View -->
+            <div id="liked-view" class="view-content hidden">
+                <div class="main-header">
+                    <h1>Liked Songs</h1>
+                </div>
+                <div class="song-grid" id="liked-songs"></div>
+            </div>
+
+            <!-- Playlist Detail View -->
+            <div id="playlist-detail-view" class="view-content hidden">
+                <div class="main-header">
+                    <h1 id="playlist-detail-title">Playlist</h1>
+                    <p id="playlist-detail-count" style="color: var(--text-secondary);"></p>
+                </div>
+                <div class="song-grid" id="playlist-detail-songs"></div>
+            </div>
+        </main>
+
+        <!-- Right Sidebar - Now Playing -->
+        <aside class="now-playing-sidebar">
+            <div>
+                <h2 class="now-playing-header">Now Playing</h2>
+                <div class="current-track-art" id="now-playing-art">
+                    🎵
+                </div>
+                <div class="current-track-info">
+                    <h3 class="current-track-title" id="now-playing-title">No track playing</h3>
+                    <p class="current-track-artist" id="now-playing-artist">Select a song to play</p>
+                </div>
+            </div>
+
+            <div class="queue-section">
+                <h3 class="queue-title">Up Next</h3>
+                <div class="queue-list" id="queue-list">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📃</div>
+                        <p class="empty-state-text">Queue is empty</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Player Bar -->
+        <div class="player-bar">
+            <!-- Track Info -->
+            <div class="player-track-info">
+                <div class="player-track-cover" id="player-cover">
+                    🎵
+                </div>
+                <div class="player-track-details">
+                    <div class="player-track-title" id="player-title">No track selected</div>
+                    <div class="player-track-artist" id="player-artist">Artist</div>
+                </div>
+            </div>
+
+            <!-- Player Controls -->
+            <div class="player-controls-center">
+                <div class="player-buttons">
+                    <button class="player-btn" id="shuffle-btn" title="Shuffle">
+                        🔀
+                    </button>
+                    <button class="player-btn" id="prev-btn" title="Previous">
+                        ⏮️
+                    </button>
+                    <button class="player-btn play-pause-btn" id="play-pause-btn" title="Play">
+                        ▶️
+                    </button>
+                    <button class="player-btn" id="next-btn" title="Next">
+                        ⏭️
+                    </button>
+                    <button class="player-btn" id="repeat-btn" title="Repeat">
+                        🔁
+                    </button>
+                </div>
+                <div class="progress-container">
+                    <span class="time-label" id="current-time">0:00</span>
+                    <div class="progress-bar" id="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                    <span class="time-label" id="duration-time">0:00</span>
+                </div>
+            </div>
+
+            <!-- Right Controls -->
+            <div class="player-right-controls">
+                <div class="volume-control">
+                    <span class="volume-icon" id="volume-icon">🔊</span>
+                    <div class="volume-slider" id="volume-slider">
+                        <div class="volume-fill" id="volume-fill"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Playlist Modal -->
+    <div class="modal" id="create-playlist-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Create New Playlist</h2>
+                <button class="close-modal" id="close-modal">×</button>
+            </div>
+            <form id="create-playlist-form">
+                <div class="form-group">
+                    <label class="form-label" for="playlist-name">Playlist Name</label>
+                    <input type="text" class="form-input" id="playlist-name" placeholder="My Awesome Playlist" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="playlist-description">Description (optional)</label>
+                    <input type="text" class="form-input" id="playlist-description" placeholder="Add a description">
+                </div>
+                <button type="submit" class="btn btn-primary">Create Playlist</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Hidden Audio Element -->
+    <audio id="audio-player" preload="metadata"></audio>
+
+    <!-- JavaScript -->
+    <script src="app.js"></script>
 </body>
 </html>
