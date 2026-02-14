@@ -829,23 +829,46 @@ async function playTrack(song) {
     state.currentTrack = song;
     state.isPlaying = true;
     
-    // Update UI
+    // Update UI immediately
     updatePlayerUI();
     updateNowPlayingUI();
     
-    // For demo purposes, we'll use a sample audio URL
-    // In production, this would fetch from yt-dlp or similar service
-    const demoAudioUrl = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
+    // Use Deezer preview URL directly
+    let audioUrl = null;
+    
+    // Check if song has preview URL from Deezer
+    if (song.preview) {
+        audioUrl = song.preview;
+    } else if (song.url) {
+        // Fallback to any other URL field
+        audioUrl = song.url;
+    }
+    
+    if (!audioUrl) {
+        console.error('No audio URL available for track:', song.title);
+        showNotification('No preview available for this track');
+        state.isPlaying = false;
+        updatePlayerUI();
+        return;
+    }
     
     try {
-        audioPlayer.src = demoAudioUrl;
+        // Set audio source to Deezer preview URL
+        audioPlayer.src = audioUrl;
+        
+        // Set volume
+        audioPlayer.volume = state.volume;
+        
+        // Play the audio
         await audioPlayer.play();
         
         // Add to recently played
         addToRecentlyPlayed(song);
+        
+        console.log('Now playing:', song.title, 'from', audioUrl);
     } catch (error) {
         console.error('Error playing track:', error);
-        showNotification('Unable to play this track');
+        showNotification('Unable to play this track. Preview may be unavailable.');
         state.isPlaying = false;
         updatePlayerUI();
     }
