@@ -1036,8 +1036,19 @@ function updatePlayerUI() {
     document.getElementById('player-artist').textContent = state.currentTrack.artist;
     
     const playerCover = document.getElementById('player-cover');
-    if (state.currentTrack.cover && state.currentTrack.cover.startsWith('http')) {
-        playerCover.innerHTML = `<img src="${state.currentTrack.cover}" alt="${state.currentTrack.title}">`;
+    let coverUrl = '';
+    
+    // Handle both object and string cover formats
+    if (state.currentTrack.cover) {
+        if (typeof state.currentTrack.cover === 'object' && state.currentTrack.cover.medium) {
+            coverUrl = state.currentTrack.cover.medium;
+        } else if (typeof state.currentTrack.cover === 'string') {
+            coverUrl = state.currentTrack.cover;
+        }
+    }
+    
+    if (coverUrl && coverUrl.startsWith('http')) {
+        playerCover.innerHTML = `<img src="${coverUrl}" alt="${state.currentTrack.title}">`;
     } else {
         playerCover.innerHTML = `<svg class="default-track-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M9 18V5L21 12L9 19V18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1052,8 +1063,19 @@ function updateNowPlayingUI() {
     document.getElementById('now-playing-artist').textContent = state.currentTrack.artist;
     
     const nowPlayingArt = document.getElementById('now-playing-art');
-    if (state.currentTrack.cover && state.currentTrack.cover.startsWith('http')) {
-        nowPlayingArt.innerHTML = `<img src="${state.currentTrack.cover}" alt="${state.currentTrack.title}">`;
+    let coverUrl = '';
+    
+    // Handle both object and string cover formats
+    if (state.currentTrack.cover) {
+        if (typeof state.currentTrack.cover === 'object' && state.currentTrack.cover.medium) {
+            coverUrl = state.currentTrack.cover.medium;
+        } else if (typeof state.currentTrack.cover === 'string') {
+            coverUrl = state.currentTrack.cover;
+        }
+    }
+    
+    if (coverUrl && coverUrl.startsWith('http')) {
+        nowPlayingArt.innerHTML = `<img src="${coverUrl}" alt="${state.currentTrack.title}">`;
     } else {
         nowPlayingArt.innerHTML = `<svg class="default-track-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M9 18V5L21 12L9 19V18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
