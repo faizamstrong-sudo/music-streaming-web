@@ -1006,6 +1006,25 @@ function handleTrackEnd() {
 // ============================================
 // Player UI Updates
 // ============================================
+
+/**
+ * Helper function to extract cover URL from track object
+ * Handles both object (Deezer format) and string formats
+ */
+function getCoverUrl(track) {
+    if (!track || !track.cover) {
+        return '';
+    }
+    
+    if (typeof track.cover === 'object' && track.cover.medium) {
+        return track.cover.medium;
+    } else if (typeof track.cover === 'string') {
+        return track.cover;
+    }
+    
+    return '';
+}
+
 function updatePlayerUI() {
     const playPauseBtn = document.getElementById('play-pause-btn');
     
@@ -1036,16 +1055,7 @@ function updatePlayerUI() {
     document.getElementById('player-artist').textContent = state.currentTrack.artist;
     
     const playerCover = document.getElementById('player-cover');
-    let coverUrl = '';
-    
-    // Handle both object and string cover formats
-    if (state.currentTrack.cover) {
-        if (typeof state.currentTrack.cover === 'object' && state.currentTrack.cover.medium) {
-            coverUrl = state.currentTrack.cover.medium;
-        } else if (typeof state.currentTrack.cover === 'string') {
-            coverUrl = state.currentTrack.cover;
-        }
-    }
+    const coverUrl = getCoverUrl(state.currentTrack);
     
     if (coverUrl && coverUrl.startsWith('http')) {
         playerCover.innerHTML = `<img src="${coverUrl}" alt="${state.currentTrack.title}">`;
@@ -1063,16 +1073,7 @@ function updateNowPlayingUI() {
     document.getElementById('now-playing-artist').textContent = state.currentTrack.artist;
     
     const nowPlayingArt = document.getElementById('now-playing-art');
-    let coverUrl = '';
-    
-    // Handle both object and string cover formats
-    if (state.currentTrack.cover) {
-        if (typeof state.currentTrack.cover === 'object' && state.currentTrack.cover.medium) {
-            coverUrl = state.currentTrack.cover.medium;
-        } else if (typeof state.currentTrack.cover === 'string') {
-            coverUrl = state.currentTrack.cover;
-        }
-    }
+    const coverUrl = getCoverUrl(state.currentTrack);
     
     if (coverUrl && coverUrl.startsWith('http')) {
         nowPlayingArt.innerHTML = `<img src="${coverUrl}" alt="${state.currentTrack.title}">`;
