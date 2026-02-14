@@ -302,7 +302,7 @@ Atau edit `backend/.env` file dan ubah port:
 PORT=3001
 ```
 
-Jangan lupa update `frontend/app.js` line yang ada `http://localhost:3000` menjadi port baru.
+Jangan lupa update `frontend/app.js` line 10 (CONFIG.API.BASE_URL) dari `http://localhost:3000` menjadi port baru.
 
 ---
 
