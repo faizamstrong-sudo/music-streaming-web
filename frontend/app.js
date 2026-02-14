@@ -829,23 +829,46 @@ async function playTrack(song) {
     state.currentTrack = song;
     state.isPlaying = true;
     
-    // Update UI
+    // Update UI immediately
     updatePlayerUI();
     updateNowPlayingUI();
     
-    // For demo purposes, we'll use a sample audio URL
-    // In production, this would fetch from yt-dlp or similar service
-    const demoAudioUrl = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
+    // Use Deezer preview URL directly
+    let audioUrl = null;
+    
+    // Check if song has preview URL from Deezer
+    if (song.preview) {
+        audioUrl = song.preview;
+    } else if (song.url) {
+        // Fallback to any other URL field
+        audioUrl = song.url;
+    }
+    
+    if (!audioUrl) {
+        console.error('No audio URL available for track:', song.title);
+        showNotification('No preview available for this track');
+        state.isPlaying = false;
+        updatePlayerUI();
+        return;
+    }
     
     try {
-        audioPlayer.src = demoAudioUrl;
+        // Set audio source to Deezer preview URL
+        audioPlayer.src = audioUrl;
+        
+        // Set volume
+        audioPlayer.volume = state.volume;
+        
+        // Play the audio
         await audioPlayer.play();
         
         // Add to recently played
         addToRecentlyPlayed(song);
+        
+        console.log('Now playing:', song.title, 'from', audioUrl);
     } catch (error) {
         console.error('Error playing track:', error);
-        showNotification('Unable to play this track');
+        showNotification('Unable to play this track. Preview may be unavailable.');
         state.isPlaying = false;
         updatePlayerUI();
     }
@@ -983,6 +1006,25 @@ function handleTrackEnd() {
 // ============================================
 // Player UI Updates
 // ============================================
+
+/**
+ * Helper function to extract cover URL from track object
+ * Handles both object (Deezer format) and string formats
+ */
+function getCoverUrl(track) {
+    if (!track || !track.cover) {
+        return '';
+    }
+    
+    if (typeof track.cover === 'object' && track.cover.medium) {
+        return track.cover.medium;
+    } else if (typeof track.cover === 'string') {
+        return track.cover;
+    }
+    
+    return '';
+}
+
 function updatePlayerUI() {
     const playPauseBtn = document.getElementById('play-pause-btn');
     
@@ -1013,8 +1055,10 @@ function updatePlayerUI() {
     document.getElementById('player-artist').textContent = state.currentTrack.artist;
     
     const playerCover = document.getElementById('player-cover');
-    if (state.currentTrack.cover && state.currentTrack.cover.startsWith('http')) {
-        playerCover.innerHTML = `<img src="${state.currentTrack.cover}" alt="${state.currentTrack.title}">`;
+    const coverUrl = getCoverUrl(state.currentTrack);
+    
+    if (coverUrl && coverUrl.startsWith('http')) {
+        playerCover.innerHTML = `<img src="${coverUrl}" alt="${state.currentTrack.title}">`;
     } else {
         playerCover.innerHTML = `<svg class="default-track-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M9 18V5L21 12L9 19V18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1029,8 +1073,10 @@ function updateNowPlayingUI() {
     document.getElementById('now-playing-artist').textContent = state.currentTrack.artist;
     
     const nowPlayingArt = document.getElementById('now-playing-art');
-    if (state.currentTrack.cover && state.currentTrack.cover.startsWith('http')) {
-        nowPlayingArt.innerHTML = `<img src="${state.currentTrack.cover}" alt="${state.currentTrack.title}">`;
+    const coverUrl = getCoverUrl(state.currentTrack);
+    
+    if (coverUrl && coverUrl.startsWith('http')) {
+        nowPlayingArt.innerHTML = `<img src="${coverUrl}" alt="${state.currentTrack.title}">`;
     } else {
         nowPlayingArt.innerHTML = `<svg class="default-track-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M9 18V5L21 12L9 19V18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
