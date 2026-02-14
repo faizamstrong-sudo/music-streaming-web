@@ -230,6 +230,18 @@ function initializeApp() {
     loadFromStorage();
     setupEventListeners();
     setupAudioListeners();
+    
+    // Initialize new modules
+    if (window.audioPlayer && audioPlayer) {
+        window.audioPlayer.init(audioPlayer);
+    }
+    
+    // Initialize equalizer UI
+    initializeEqualizerUI();
+    
+    // Initialize lyrics panel UI
+    initializeLyricsUI();
+    
     renderView('home');
     updatePlayerUI();
     updateGreeting(); // Add greeting
@@ -833,7 +845,22 @@ async function playTrack(song) {
     updatePlayerUI();
     updateNowPlayingUI();
     
-    // Use Deezer preview URL directly
+    // Use new audioPlayer module for full-duration playback
+    if (window.audioPlayer) {
+        const success = await window.audioPlayer.playTrack(song);
+        if (success) {
+            // Add to recently played
+            addToRecentlyPlayed(song);
+            console.log('Now playing:', song.title);
+        } else {
+            // Playback failed
+            state.isPlaying = false;
+            updatePlayerUI();
+        }
+        return;
+    }
+    
+    // Fallback to old method if new module not available
     let audioUrl = null;
     
     // Check if song has preview URL from Deezer
@@ -1270,6 +1297,102 @@ function hideModal(modalId) {
 function showNotification(message) {
     // Simple notification (can be enhanced with a toast library)
     console.log('Notification:', message);
+}
+
+// ============================================
+// Equalizer UI Initialization
+// ============================================
+function initializeEqualizerUI() {
+    // Set up preset buttons
+    const presetButtons = document.querySelectorAll('.eq-preset-btn');
+    presetButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const preset = btn.dataset.preset;
+            
+            // Apply preset
+            if (window.equalizer) {
+                window.equalizer.applyPreset(preset);
+            }
+            
+            // Update UI
+            updateEqualizerUI();
+            
+            // Update active button
+            presetButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        });
+    });
+    
+    // Set up band sliders
+    for (let i = 0; i < 5; i++) {
+        const slider = document.getElementById(`eq-band-${i}`);
+        const valueDisplay = document.getElementById(`eq-value-${i}`);
+        
+        if (slider && valueDisplay) {
+            slider.addEventListener('input', (e) => {
+                const value = parseFloat(e.target.value);
+                
+                // Update equalizer
+                if (window.equalizer) {
+                    window.equalizer.setBandGain(i, value);
+                }
+                
+                // Update display
+                valueDisplay.textContent = `${value > 0 ? '+' : ''}${value.toFixed(1)}dB`;
+                
+                // Mark as custom if not matching a preset
+                presetButtons.forEach(b => b.classList.remove('active'));
+            });
+        }
+    }
+    
+    // Initialize UI with current values
+    updateEqualizerUI();
+}
+
+function updateEqualizerUI() {
+    if (!window.equalizer) return;
+    
+    const values = window.equalizer.getBandValues();
+    const currentPreset = window.equalizer.currentPreset;
+    
+    // Update sliders and value displays
+    values.forEach((value, index) => {
+        const slider = document.getElementById(`eq-band-${index}`);
+        const valueDisplay = document.getElementById(`eq-value-${index}`);
+        
+        if (slider) {
+            slider.value = value;
+        }
+        if (valueDisplay) {
+            valueDisplay.textContent = `${value > 0 ? '+' : ''}${value.toFixed(1)}dB`;
+        }
+    });
+    
+    // Update active preset button
+    const presetButtons = document.querySelectorAll('.eq-preset-btn');
+    presetButtons.forEach(btn => {
+        if (btn.dataset.preset === currentPreset) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+}
+
+// ============================================
+// Lyrics UI Initialization
+// ============================================
+function initializeLyricsUI() {
+    const closeBtn = document.getElementById('lyrics-close-btn');
+    
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            if (window.lyricsManager) {
+                window.lyricsManager.hideLyrics();
+            }
+        });
+    }
 }
 
 // ============================================

@@ -1,14 +1,29 @@
-# FASHIN Play - Music Streaming Web Application
+# FASHIN Play V1 - Music Streaming Web Application
 
-Modern music streaming web application dengan design batik Indonesia tradisional, terintegrasi dengan Deezer API untuk real music streaming.
+Modern music streaming web application dengan design batik Indonesia tradisional. V1 introduces **full-duration playback**, **lyrics display**, and **professional 5-band equalizer**.
 
 ## ✨ Features
 
-### 🎵 Music Streaming
-- **Real Deezer Integration** - Stream actual music from Deezer's extensive library
-- **HTML5 Audio Player** - Native audio playback with full controls
-- **30-Second Previews** - High-quality preview clips for all tracks
-- **Instant Playback** - No delay, click and play
+### 🎵 NEW: Full Music Playback (No 30s Limit!)
+- **YouTube Integration** - Full-duration audio via yt-dlp
+- **Smart Fallback** - Automatic Deezer fallback when YouTube unavailable
+- **24-Hour Caching** - Fast playback with intelligent caching
+- **Seamless Experience** - Click and play, no delay
+- **Loading Indicators** - Visual feedback during audio fetch
+
+### 🎤 NEW: Lyrics Display
+- **Genius Integration** - Lyrics preview from Genius API
+- **Legal & Safe** - Preview only, respects copyright
+- **Smart Display** - Auto-show/hide with smooth animations
+- **Full Lyrics Link** - One-click to view complete lyrics on Genius
+- **7-Day Caching** - Efficient performance
+
+### 🎚️ NEW: 5-Band Equalizer
+- **Professional EQ** - Bass, Low-Mid, Mid, High-Mid, Treble control
+- **6 Presets** - Normal, Rock, Pop, Hip-Hop, Jazz, Classical
+- **Real-Time Adjustment** - Instant audio processing
+- **Persistent Settings** - Saved to localStorage
+- **Visual Feedback** - Live frequency display
 
 ### 🎮 Player Controls
 - Play/Pause functionality
@@ -46,6 +61,7 @@ Modern music streaming web application dengan design batik Indonesia tradisional
 ### Prerequisites
 - **Node.js v20+** - [Download](https://nodejs.org/)
 - **Python 3+** - [Download](https://www.python.org/)
+- **yt-dlp** - [Install Guide](#installing-yt-dlp)
 
 ### Installation & Running
 
@@ -211,6 +227,50 @@ npm start
 - Backend automatically enables CORS for localhost:8000
 - If issues persist, check browser console
 - Ensure backend is running on port 3000
+
+## 📦 Installing yt-dlp
+
+### Windows
+```bash
+# Using pip
+pip install yt-dlp
+
+# Or using winget
+winget install yt-dlp
+```
+
+### Mac
+```bash
+# Using Homebrew
+brew install yt-dlp
+
+# Or using pip
+pip3 install yt-dlp
+```
+
+### Linux
+```bash
+# Using pip
+pip install yt-dlp
+
+# Or using apt (Ubuntu/Debian)
+sudo apt install yt-dlp
+
+# Or download binary
+sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp
+sudo chmod a+rx /usr/local/bin/yt-dlp
+```
+
+### Verify Installation
+```bash
+yt-dlp --version
+```
+
+## 📚 Documentation
+
+- **[FEATURES.md](FEATURES.md)** - Detailed feature documentation
+- **[API.md](API.md)** - Complete API reference
+- **[INSTALLATION.md](INSTALLATION.md)** - Extended setup guide
 
 ## 📝 License
 

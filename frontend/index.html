@@ -285,6 +285,91 @@
         </div>
     </div>
 
+    <!-- Loading Indicator -->
+    <div class="loading-indicator" id="loading-indicator">
+        <div class="loading-spinner"></div>
+        <span>Loading audio...</span>
+    </div>
+
+    <!-- Lyrics Panel -->
+    <div class="lyrics-panel" id="lyrics-panel">
+        <div class="lyrics-header">
+            <h3 class="lyrics-title">Lyrics Preview</h3>
+            <button class="lyrics-close-btn" id="lyrics-close-btn" title="Close">×</button>
+        </div>
+        <div class="lyrics-content" id="lyrics-content">
+            <p class="lyrics-placeholder">No lyrics available</p>
+        </div>
+        <button class="btn btn-primary" id="view-full-lyrics-btn" style="display: none;">
+            View Full Lyrics on Genius
+        </button>
+    </div>
+
+    <!-- Equalizer Panel -->
+    <div class="equalizer-panel" id="equalizer-panel">
+        <div class="equalizer-header">
+            <h3 class="equalizer-title">5-Band Equalizer</h3>
+            <button class="equalizer-toggle-btn" id="equalizer-toggle-btn" title="Toggle Equalizer">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="4" y1="21" x2="4" y2="14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="4" y1="10" x2="4" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="12" y1="21" x2="12" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="12" y1="8" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="20" y1="21" x2="20" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="20" y1="12" x2="20" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <circle cx="4" cy="12" r="2" stroke="currentColor" stroke-width="2"/>
+                    <circle cx="12" cy="10" r="2" stroke="currentColor" stroke-width="2"/>
+                    <circle cx="20" cy="14" r="2" stroke="currentColor" stroke-width="2"/>
+                </svg>
+            </button>
+        </div>
+        <div class="equalizer-content" id="equalizer-content">
+            <!-- Preset Buttons -->
+            <div class="equalizer-presets">
+                <button class="eq-preset-btn active" data-preset="normal">Normal</button>
+                <button class="eq-preset-btn" data-preset="rock">Rock</button>
+                <button class="eq-preset-btn" data-preset="pop">Pop</button>
+                <button class="eq-preset-btn" data-preset="hiphop">Hip-Hop</button>
+                <button class="eq-preset-btn" data-preset="jazz">Jazz</button>
+                <button class="eq-preset-btn" data-preset="classical">Classical</button>
+            </div>
+            
+            <!-- 5-Band Sliders -->
+            <div class="equalizer-bands">
+                <div class="eq-band">
+                    <label class="eq-band-label">Bass</label>
+                    <div class="eq-band-info">100Hz</div>
+                    <input type="range" class="eq-slider" id="eq-band-0" min="-12" max="12" step="0.5" value="0">
+                    <div class="eq-value" id="eq-value-0">0dB</div>
+                </div>
+                <div class="eq-band">
+                    <label class="eq-band-label">Low-Mid</label>
+                    <div class="eq-band-info">375Hz</div>
+                    <input type="range" class="eq-slider" id="eq-band-1" min="-12" max="12" step="0.5" value="0">
+                    <div class="eq-value" id="eq-value-1">0dB</div>
+                </div>
+                <div class="eq-band">
+                    <label class="eq-band-label">Mid</label>
+                    <div class="eq-band-info">1.25kHz</div>
+                    <input type="range" class="eq-slider" id="eq-band-2" min="-12" max="12" step="0.5" value="0">
+                    <div class="eq-value" id="eq-value-2">0dB</div>
+                </div>
+                <div class="eq-band">
+                    <label class="eq-band-label">High-Mid</label>
+                    <div class="eq-band-info">3kHz</div>
+                    <input type="range" class="eq-slider" id="eq-band-3" min="-12" max="12" step="0.5" value="0">
+                    <div class="eq-value" id="eq-value-3">0dB</div>
+                </div>
+                <div class="eq-band">
+                    <label class="eq-band-label">Treble</label>
+                    <div class="eq-band-info">10kHz</div>
+                    <input type="range" class="eq-slider" id="eq-band-4" min="-12" max="12" step="0.5" value="0">
+                    <div class="eq-value" id="eq-value-4">0dB</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Create Playlist Modal -->
     <div class="modal" id="create-playlist-modal">
         <div class="modal-content">
@@ -309,7 +394,10 @@
     <!-- Hidden Audio Element -->
     <audio id="audio-player" preload="metadata"></audio>
 
-    <!-- JavaScript -->
+    <!-- JavaScript Modules -->
+    <script src="modules/equalizer.js"></script>
+    <script src="modules/lyrics.js"></script>
+    <script src="modules/player.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
