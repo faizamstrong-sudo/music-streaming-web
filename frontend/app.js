@@ -295,7 +295,7 @@ function loadFromStorage() {
     state.likedSongs = savedLiked ? JSON.parse(savedLiked) : [];
     
     // Load recently played
-    const savedRecent = localStorage.getItem(CONFIG.STORAGE_KEYS.RECENT_PLAYED);
+    const savedRecent = localStorage.getItem(CONFIG.STORAGE_KEYS.RECENTLY_PLAYED);
     state.recentlyPlayed = savedRecent ? JSON.parse(savedRecent) : [];
     
     // Load volume
@@ -307,7 +307,7 @@ function loadFromStorage() {
 function saveToStorage() {
     localStorage.setItem(CONFIG.STORAGE_KEYS.PLAYLISTS, JSON.stringify(state.playlists));
     localStorage.setItem(CONFIG.STORAGE_KEYS.LIKED_SONGS, JSON.stringify(state.likedSongs));
-    localStorage.setItem(CONFIG.STORAGE_KEYS.RECENT_PLAYED, JSON.stringify(state.recentlyPlayed));
+    localStorage.setItem(CONFIG.STORAGE_KEYS.RECENTLY_PLAYED, JSON.stringify(state.recentlyPlayed));
     localStorage.setItem(CONFIG.STORAGE_KEYS.VOLUME, state.volume);
 }
 
