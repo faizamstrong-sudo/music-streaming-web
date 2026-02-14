@@ -1,11 +1,200 @@
-// Music Streaming Web Application
+// Music Streaming Web Application - FASHIN Play
 // All-in-one JavaScript file with complete functionality
 
 // ============================================
-// Configuration from config.js is now loaded
-// Additional app-specific constants
+// Configuration (from config.js)
 // ============================================
-CONFIG.LASTFM_API_KEY = CONFIG.LASTFM_API_KEY || '8d0d5e4f99dd5b9c17cfafea0d3d3d3d'; // Public Last.fm API key for demo
+const CONFIG = {
+    // Backend API Configuration
+    API: {
+        BASE_URL: 'http://localhost:3000',
+        ENDPOINTS: {
+            SONGS: '/api/songs',
+            STREAM: '/api/stream',
+            HEALTH: '/health'
+        },
+        TIMEOUT: 10000 // 10 seconds
+    },
+    
+    // Application Settings
+    APP: {
+        NAME: 'FASHIN Play',
+        VERSION: '1.0.0',
+        DESCRIPTION: 'Professional Music Streaming Platform',
+        THEME_DEFAULT: 'dark'
+    },
+    
+    // Storage Keys for localStorage
+    STORAGE_KEYS: {
+        PLAYLISTS: 'fashin_playlists',
+        LIKED_SONGS: 'fashin_liked_songs',
+        RECENTLY_PLAYED: 'fashin_recently_played',
+        THEME: 'fashin_theme',
+        VOLUME: 'fashin_volume',
+        QUEUE: 'fashin_queue',
+        CURRENT_TRACK: 'fashin_current_track'
+    },
+    
+    // Player Configuration
+    PLAYER: {
+        DEFAULT_VOLUME: 0.7,
+        SEEK_STEP: 5, // seconds
+        UPDATE_INTERVAL: 1000 // ms
+    },
+    
+    // UI Configuration
+    UI: {
+        SONGS_PER_PAGE: 25,
+        SEARCH_DEBOUNCE: 500, // ms
+        TOAST_DURATION: 3000, // ms
+        ANIMATION_DURATION: 300 // ms
+    },
+    
+    // Theme Colors (Traditional Javanese)
+    COLORS: {
+        PRIMARY: '#4A90E2',    // Biru Muda (Light Blue)
+        SECONDARY: '#FFFFFF',  // White
+        ACCENT: '#D4AF37',     // Gold/Emas
+        DARK_BG: '#1a1f2e',
+        LIGHT_BG: '#f5f7fa'
+    },
+    
+    // Greeting Messages
+    GREETINGS: {
+        MORNING: 'Selamat pagi bbyy...',
+        NOON: 'Selamat siang bbyy...',
+        AFTERNOON: 'Selamat sore bbyy...',
+        EVENING: 'Selamat malam bbyy...'
+    },
+    
+    // Personal Signature
+    SIGNATURE: 'FAIZ ❤ SHINTA',
+    
+    // Feature Flags
+    FEATURES: {
+        YOUTUBE_STREAMING: true,
+        DEEZER_INTEGRATION: true,
+        OFFLINE_MODE: true,
+        BATIK_DESIGN: true
+    },
+    
+    // Last.fm API key for fallback
+    LASTFM_API_KEY: '8d0d5e4f99dd5b9c17cfafea0d3d3d3d'
+};
+
+// ============================================
+// API Client Functions (from api.js)
+// ============================================
+let isBackendConnected = false;
+
+/**
+ * Check backend connection
+ */
+async function checkBackendConnection() {
+    try {
+        const response = await fetch(`${CONFIG.API.BASE_URL}/health`);
+        const data = await response.json();
+        isBackendConnected = data.status === 'ok';
+        updateConnectionStatus(isBackendConnected);
+        return isBackendConnected;
+    } catch (error) {
+        console.error('Backend connection failed:', error);
+        isBackendConnected = false;
+        updateConnectionStatus(false);
+        return false;
+    }
+}
+
+/**
+ * Generic fetch wrapper with error handling
+ */
+async function apiFetch(url, options = {}) {
+    try {
+        const response = await fetch(url, {
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers
+            }
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+            throw new Error(data.error || 'API request failed');
+        }
+        
+        return data;
+    } catch (error) {
+        console.error('API Error:', error);
+        throw error;
+    }
+}
+
+/**
+ * Search tracks on Deezer
+ */
+async function searchTracks(query, limit = 25) {
+    const url = `${CONFIG.API.BASE_URL}${CONFIG.API.ENDPOINTS.SONGS}/search?q=${encodeURIComponent(query)}&limit=${limit}`;
+    return apiFetch(url);
+}
+
+/**
+ * Get chart/recommended tracks
+ */
+async function getChartTracks(limit = 25) {
+    const url = `${CONFIG.API.BASE_URL}${CONFIG.API.ENDPOINTS.SONGS}/charts?limit=${limit}`;
+    return apiFetch(url);
+}
+
+/**
+ * Get tracks by genre
+ */
+async function getTracksByGenre(genreId, limit = 25) {
+    const url = `${CONFIG.API.BASE_URL}${CONFIG.API.ENDPOINTS.SONGS}/genre/${genreId}?limit=${limit}`;
+    return apiFetch(url);
+}
+
+/**
+ * Get track details by ID
+ */
+async function getTrackById(trackId) {
+    const url = `${CONFIG.API.BASE_URL}${CONFIG.API.ENDPOINTS.SONGS}/${trackId}`;
+    return apiFetch(url);
+}
+
+/**
+ * Get artist's top tracks
+ */
+async function getArtistTopTracks(artistId, limit = 10) {
+    const url = `${CONFIG.API.BASE_URL}${CONFIG.API.ENDPOINTS.SONGS}/artist/${artistId}/top?limit=${limit}`;
+    return apiFetch(url);
+}
+
+/**
+ * Get YouTube stream URL
+ */
+async function getYouTubeStreamUrl(videoId) {
+    const url = `${CONFIG.API.BASE_URL}${CONFIG.API.ENDPOINTS.STREAM}/youtube/${videoId}`;
+    return apiFetch(url);
+}
+
+/**
+ * Get YouTube video info
+ */
+async function getYouTubeVideoInfo(videoId) {
+    const url = `${CONFIG.API.BASE_URL}${CONFIG.API.ENDPOINTS.STREAM}/info/${videoId}`;
+    return apiFetch(url);
+}
+
+/**
+ * Search YouTube
+ */
+async function searchYouTube(query, maxResults = 10) {
+    const url = `${CONFIG.API.BASE_URL}${CONFIG.API.ENDPOINTS.STREAM}/search?q=${encodeURIComponent(query)}&maxResults=${maxResults}`;
+    return apiFetch(url);
+}
+
 
 // ============================================
 // State Management
