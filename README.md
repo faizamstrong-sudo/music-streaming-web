@@ -1,9 +1,9 @@
 # 🎵 FASHIN Play - Professional Music Streaming Platform
 
-A fully functional, production-ready music streaming web application with a modern, professional design. Built with pure HTML, CSS, and JavaScript - no backend required!
+A fully functional, production-ready music streaming web application with a modern, professional design and Traditional Javanese aesthetic. Features personalized greetings, Deezer API integration, and YouTube audio streaming capabilities.
 
-![FASHIN Play Dark Mode](https://github.com/user-attachments/assets/28a257dd-a3b7-4f5c-9bf4-a2721b2adb10)
-![FASHIN Play Light Mode](https://github.com/user-attachments/assets/3533872a-ec24-4186-815c-136ae7157d15)
+![FASHIN Play Dark Mode](https://github.com/user-attachments/assets/23bd3807-c37b-42e3-a2b7-135d10ec4e5d)
+![FASHIN Play Light Mode](https://github.com/user-attachments/assets/4575f518-5c4f-48f8-9565-808338e39937)
 
 ## ✨ Features
 
@@ -14,22 +14,27 @@ A fully functional, production-ready music streaming web application with a mode
 - **Shuffle & Repeat**: Multiple playback modes (shuffle, repeat all, repeat one)
 - **Queue Management**: View and manage upcoming songs
 
-### 🎨 Professional UI/UX Design
-- **FASHIN Play Branding**: Modern logo with cyan accent color (#00D4FF)
-- **3-Column Layout**: Sidebar navigation, main content area, and now playing sidebar
+### 🎨 Personalized UI/UX Design
+- **Time-Based Greeting**: "Selamat pagi/siang/sore/malam bbyy..." based on time of day
+- **Personal Signature**: "FAIZ ❤ SHINTA" displayed with elegant typography
+- **Traditional Javanese Color Scheme**:
+  - Primary Color: Biru Muda (#4A90E2)
+  - Secondary: White (#FFFFFF)  
+  - Accent: Gold/Emas (#D4AF37)
+  - Subtle batik-inspired patterns
+- **Elegant Typography**: Georgia, Playfair Display for personal touch
+- **Relocated Theme Toggle**: Small, elegant toggle in bottom-left corner
 - **Dark & Light Mode**: Professional color palettes with smooth transitions
-- **SVG Icons**: All icons are professional SVG graphics (no emoticons)
-- **Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
-- **Smooth Animations**: Hover effects, transitions, and loading states
-- **Professional Shadows**: Subtle elevation shadows for depth
-- **Empty States**: User-friendly messages with professional icons
+- **Connection Status**: Real-time backend connection indicator
 
-### 🎼 Music Library
+### 🎼 Music Integration
+- **Deezer API**: Search tracks, browse charts, explore genres (free, no key required)
+- **YouTube Streaming**: Audio stream extraction via ytdl-core
+- **Smart Caching**: Cache stream URLs for better performance
 - **Featured Songs**: Discover trending tracks
 - **Indonesian Hits**: Curated collection of Indonesian music
 - **International Favorites**: Popular international tracks
-- **Recently Played**: Track your listening history
-- **Liked Songs**: Save your favorite tracks
+- **Search Functionality**: Real-time search with Deezer database
 
 ### 📂 Playlist Management
 - **Create Playlists**: Build custom collections with names and descriptions
@@ -38,8 +43,8 @@ A fully functional, production-ready music streaming web application with a mode
 
 ### 🔍 Search Functionality
 - **Real-time Search**: Find songs and artists as you type
-- **API Integration**: Powered by Last.fm API for music metadata
-- **Search Results Grid**: Beautiful display of search results with professional styling
+- **Deezer Integration**: Powered by Deezer API for music metadata
+- **Fallback to Last.fm**: Graceful degradation when backend unavailable
 
 ### 💾 Local Storage
 - Playlists and collections
@@ -50,24 +55,27 @@ A fully functional, production-ready music streaming web application with a mode
 
 ## 🎨 Design System
 
-### Color Palette
+### Color Palette - Traditional Javanese Theme
 
-**Dark Mode (Default)**
-- Primary Background: `#0A0E27` (Deep navy)
-- Secondary Background: `#0f1433`
-- Accent Color: `#00D4FF` (Cyan)
+**Dark Mode**
+- Primary Background: `#1a1f2e` (Deep navy)
+- Secondary Background: `#242938`
+- Accent Color: `#4A90E2` (Biru Muda)
+- Gold Accent: `#D4AF37` (Emas)
 - Text Primary: `#ffffff`
-- Text Secondary: `#b3b8d4`
+- Text Secondary: `#b8c5d6`
+- Batik Pattern: Subtle diagonal patterns with blue and gold
 
 **Light Mode**
-- Primary Background: `#f8f9fa` (Light gray)
-- Secondary Background: `#ffffff` (White)
-- Accent Color: `#00D4FF` (Cyan)
-- Text Primary: `#0A0E27`
-- Text Secondary: `#495057`
+- Primary Background: `#f5f7fa` (Light gray)
+- Secondary Background: `#FFFFFF` (White)
+- Accent Color: `#4A90E2` (Biru Muda)
+- Gold Accent: `#D4AF37` (Emas)
+- Text Primary: `#1a1f2e`
+- Text Secondary: `#4a5568`
 
 ### Typography
-- Font Family: Segoe UI, -apple-system, BlinkMacSystemFont, sans-serif
+- Font Family: Georgia, Playfair Display, serif (elegant and personal)
 - Headings: 700 weight
 - Body: 400-600 weight
 
@@ -80,49 +88,125 @@ A fully functional, production-ready music streaming web application with a mode
 - Large: 12px
 - Circular: 50%
 
-### Shadows
-- Small: `0 2px 4px rgba(0, 0, 0, 0.1)`
-- Medium: `0 4px 6px rgba(0, 0, 0, 0.1)`
-- Large: `0 10px 15px rgba(0, 0, 0, 0.2)`
-- Extra Large: `0 20px 25px rgba(0, 0, 0, 0.3)`
+## 🏗️ Architecture
 
-## 🚀 Getting Started
+```
+┌─────────────────────────────────────────────────────────────┐
+│                     FASHIN Play Architecture                 │
+├─────────────────────────────────────────────────────────────┤
+│                                                               │
+│  Frontend (Port 8000)          Backend (Port 3000)           │
+│  ├── index.html                ├── server.js                 │
+│  ├── styles.css                ├── routes/                   │
+│  ├── app.js                    │   ├── songs.js              │
+│  └── api-client.js             │   └── stream.js             │
+│                                ├── controllers/              │
+│                                │   ├── deezer.js             │
+│                                │   └── youtube.js            │
+│                                └── utils/                    │
+│                                                               │
+│  ┌──────────────┐              ┌──────────────┐             │
+│  │   Browser    │─────────────▶│   Express    │             │
+│  │              │   REST API   │   Server     │             │
+│  └──────────────┘◀─────────────└──────────────┘             │
+│         │                              │                     │
+│         │                              ├──────────┐          │
+│         │                              │          │          │
+│         │                       ┌──────▼─────┐ ┌─▼────────┐ │
+│         │                       │   Deezer   │ │  ytdl-   │ │
+│         │                       │    API     │ │   core   │ │
+│         │                       └────────────┘ └──────────┘ │
+│         │                                                     │
+│         └─────────────────────────────────────────────────┐  │
+│                          localStorage                      │  │
+│                    (Playlists, Settings, etc.)            │  │
+│                                                             │  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+## 🚀 Quick Start
 
 ### Prerequisites
-- A modern web browser (Chrome, Firefox, Safari, Edge)
-- No installation or backend required!
+- Node.js v14 or higher
+- npm or yarn
+- Modern web browser (Chrome, Firefox, Safari, Edge)
 
-### Installation
+### Installation & Running
 
-1. **Clone the repository**
+#### Option 1: Automated Start (Recommended)
+
+**Start Backend:**
 ```bash
-git clone https://github.com/faizamstrong-sudo/music-streaming-web.git
-cd music-streaming-web
+cd backend
+chmod +x start.sh
+./start.sh
 ```
 
-2. **Open in browser**
+**Start Frontend (in a new terminal):**
 ```bash
-# Option 1: Using Python
+chmod +x start-frontend.sh
+./start-frontend.sh
+```
+
+#### Option 2: Manual Start
+
+**1. Start Backend Server:**
+```bash
+cd backend
+npm install
+npm start
+```
+
+**2. Start Frontend Server (in a new terminal):**
+```bash
+# Using Python 3
 python3 -m http.server 8000
 
-# Option 2: Using Node.js
-npx http-server
-
-# Option 3: Just open index.html directly
-open index.html
+# Or using Node.js
+npx http-server -p 8000
 ```
 
-3. **Access the application**
-Navigate to `http://localhost:8000` in your browser
+**3. Access the application:**
+- Frontend: `http://localhost:8000`
+- Backend API: `http://localhost:3000`
+- Health Check: `http://localhost:3000/health`
+
+### Verification
+
+1. Open `http://localhost:8000` in your browser
+2. Check "Backend Connected" indicator in top-right
+3. Browse featured songs and Indonesian hits
+4. Try searching for music
+5. Toggle between dark and light themes (button in bottom-left)
 
 ## 📁 Project Structure
 
 ```
 music-streaming-web/
-├── index.html          # Semantic HTML5 structure with SVG icons
-├── styles.css          # Professional CSS with CSS variables and design system
-├── app.js             # Clean, modular JavaScript
-└── README.md          # Professional documentation
+├── index.html              # Main HTML with semantic structure
+├── styles.css              # Javanese-themed CSS with batik patterns
+├── app.js                  # Frontend JavaScript with greeting system
+├── api-client.js           # Backend API client
+├── start-frontend.sh       # Frontend startup script
+├── README.md              # This file
+│
+├── backend/               # Node.js + Express Backend
+│   ├── package.json       # Backend dependencies
+│   ├── server.js          # Express server setup
+│   ├── start.sh           # Backend startup script
+│   ├── README.md          # Backend documentation
+│   │
+│   ├── routes/            # API Routes
+│   │   ├── songs.js       # Deezer API routes
+│   │   └── stream.js      # YouTube streaming routes
+│   │
+│   ├── controllers/       # Business Logic
+│   │   ├── deezer.js      # Deezer API integration
+│   │   └── youtube.js     # YouTube stream extraction
+│   │
+│   └── utils/             # Helper utilities
+│
+└── .gitignore            # Git ignore rules
 ```
 
 ## 🔧 Technical Stack
@@ -130,14 +214,23 @@ music-streaming-web/
 ### Frontend
 - **HTML5**: Semantic markup with inline SVG icons
 - **CSS3**: Modern features (Grid, Flexbox, CSS Variables, Transitions)
-- **JavaScript (ES6+)**: Vanilla JavaScript, no frameworks
+- **JavaScript (ES6+)**: Vanilla JavaScript with async/await
+- **Google Fonts**: Playfair Display for elegant typography
+
+### Backend
+- **Node.js + Express.js**: RESTful API server
+- **ytdl-core**: YouTube audio extraction
+- **axios**: HTTP client for Deezer API
+- **node-cache**: In-memory caching for stream URLs
+- **cors**: Cross-origin resource sharing
 
 ### APIs Used
-- **Last.fm API**: Music metadata and search
-- **Demo Audio**: SoundHelix for testing
+- **Deezer API**: Music metadata, search, and charts (free, no authentication)
+- **YouTube**: Audio streaming via ytdl-core
 
 ### Storage
-- **LocalStorage**: Client-side data persistence
+- **LocalStorage**: Client-side data persistence (playlists, settings)
+- **Node-Cache**: Server-side caching (stream URLs, API responses)
 
 ## 🎮 User Guide
 
@@ -154,20 +247,34 @@ music-streaming-web/
 ### Searching for Music
 1. Click "Search" in the sidebar
 2. Type song name or artist in the search box
-3. Results appear automatically as you type
+3. Results appear automatically from Deezer
 
 ### Changing Theme
-- Click the theme toggle button at the bottom of the sidebar
+- Click the theme toggle button in the bottom-left corner
 - Preference is saved automatically
-
-### Managing Volume
-1. Use the volume slider on the right side of the player bar
-2. Click the volume icon to mute/unmute
 
 ### Playback Modes
 - **Shuffle**: Random playback order
 - **Repeat All**: Loop through all songs in queue
 - **Repeat One**: Repeat current song continuously
+
+## 📝 API Endpoints
+
+### Health Check
+- `GET /health` - Check backend server status
+
+### Songs (Deezer)
+- `GET /api/songs/search?q={query}&limit={limit}` - Search tracks
+- `GET /api/songs/charts?limit={limit}` - Get chart tracks
+- `GET /api/songs/genre/{genreId}?limit={limit}` - Get tracks by genre
+- `GET /api/songs/{trackId}` - Get track details
+- `GET /api/songs/artist/{artistId}/top?limit={limit}` - Get artist's top tracks
+
+### Streaming (YouTube)
+- `GET /api/stream/youtube/{videoId}` - Get stream URL for video
+- `GET /api/stream/info/{videoId}` - Get video information
+- `GET /api/stream/search?q={query}` - Search YouTube
+- `POST /api/stream/cache/clear` - Clear stream cache
 
 ## 🔐 Privacy & Security
 
@@ -175,41 +282,31 @@ music-streaming-web/
 - **Local Data Only**: All personal data stored in browser localStorage
 - **No Tracking**: No analytics or tracking scripts
 - **Client-Side Only**: No server communication except for music APIs
+- **CORS Protected**: Backend properly configured for security
 
 ## 🛠️ Development
 
-### Key Design Principles
-1. **Minimalist Design**: No emojis or emoticons, only professional SVG icons
-2. **Consistent Spacing**: 4px-based spacing scale
-3. **Professional Color Palette**: Limited, consistent usage
-4. **Smooth Animations**: All transitions are 0.2-0.3s for polish
-5. **Accessibility**: Proper contrast ratios (WCAG AA compliant)
+### Key Features Implemented
+1. **Time-Based Greeting System**: Updates every minute
+2. **Backend Connection Monitoring**: Checks every 30 seconds
+3. **Smart Fallback**: Gracefully degrades to Last.fm when backend unavailable
+4. **Mock Data**: Development mode with sample tracks
+5. **Responsive Design**: Works on desktop, tablet, and mobile
 
-### SVG Icons
-All icons are inline SVG graphics with proper viewBox and stroke styling:
-- Home, Search, Library icons
-- Playlist, Create, Like icons
-- Player controls (play, pause, next, previous, shuffle, repeat)
-- Volume control icons
-- Theme toggle (moon/sun)
+### Environment Variables (Optional)
 
-### Responsive Breakpoints
-- **Desktop**: Full 3-column layout (1200px+)
-- **Tablet**: 2-column layout without right sidebar (768px-1200px)
-- **Mobile**: Single column with collapsible sidebar (<768px)
-
-## 📝 API Integration
-
-The application uses Last.fm API for music metadata. To use your own API key:
-
-1. Get a free API key from [Last.fm API](https://www.last.fm/api)
-2. Update the API key in `app.js`:
-```javascript
-const CONFIG = {
-    LASTFM_API_KEY: 'your-api-key-here',
-    // ...
-};
+Create a `.env` file in the backend directory:
+```env
+PORT=3000
+NODE_ENV=development
 ```
+
+### CORS Configuration
+
+The backend accepts requests from:
+- `http://localhost:8000`
+- `http://127.0.0.1:8000`
+- `http://localhost:5500` (Live Server)
 
 ## 📈 Browser Support
 
@@ -234,10 +331,28 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ## 🙏 Acknowledgments
 
+- Traditional Javanese color inspiration
 - FASHIN Play branding and design
 - Professional SVG icons (inline)
-- Music metadata from Last.fm API
-- Demo audio from SoundHelix
+- Music metadata from Deezer API
+- YouTube audio streaming via ytdl-core
+
+## 🐛 Troubleshooting
+
+### Backend won't start
+- Make sure port 3000 is not in use: `lsof -i :3000`
+- Check Node.js version: `node --version` (should be v14+)
+- Reinstall dependencies: `cd backend && rm -rf node_modules && npm install`
+
+### Frontend can't connect to backend
+- Verify backend is running: `curl http://localhost:3000/health`
+- Check browser console for CORS errors
+- Ensure both servers are running on correct ports
+
+### Songs not loading
+- Check backend logs for errors
+- Verify Deezer API is accessible (mock data will be used if not)
+- Clear browser cache and reload
 
 ## 📧 Contact
 
@@ -245,6 +360,6 @@ For questions or feedback, please open an issue on GitHub.
 
 ---
 
-**FASHIN Play - Professional Music Streaming Experience**
+**FASHIN Play - Streaming Music dengan Sentuhan Tradisional Indonesia** 🎵🎶
 
-Enjoy your music! 🎵🎶
+Made with ❤️ by FAIZ & SHINTA

@@ -5,8 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FASHIN Play - Your Music Streaming Platform</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Connection Status Indicator -->
+    <div class="connection-status disconnected" id="connection-status">
+        <span id="connection-text">Checking...</span>
+    </div>
+
+    <!-- Theme Toggle (Bottom-Left Corner) -->
+    <button class="theme-toggle" id="theme-toggle" title="Toggle theme">
+        <svg id="theme-icon" class="theme-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span id="theme-text" style="display: none;">Dark Mode</span>
+    </button>
+
     <!-- Main App Container -->
     <div class="app-container">
         <!-- Left Sidebar -->
@@ -60,13 +76,6 @@
                 </a>
                 <div id="playlist-list"></div>
             </div>
-
-            <button class="theme-toggle" id="theme-toggle">
-                <svg id="theme-icon" class="theme-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <span id="theme-text">Dark Mode</span>
-            </button>
         </aside>
 
         <!-- Main Content Area -->
@@ -74,7 +83,10 @@
             <!-- Home View -->
             <div id="home-view" class="view-content">
                 <div class="main-header">
-                    <h1>Welcome Back</h1>
+                    <div class="greeting-section">
+                        <h1 class="greeting-text" id="greeting-text">Selamat datang</h1>
+                        <p class="signature-text">FAIZ ❤ SHINTA</p>
+                    </div>
                 </div>
 
                 <div class="section">
@@ -298,6 +310,7 @@
     <audio id="audio-player" preload="metadata"></audio>
 
     <!-- JavaScript -->
+    <script src="api-client.js"></script>
     <script src="app.js"></script>
 </body>
 </html>

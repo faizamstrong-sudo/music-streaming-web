@@ -52,10 +52,50 @@ function initializeApp() {
     setupAudioListeners();
     renderView('home');
     updatePlayerUI();
+    updateGreeting(); // Add greeting
     loadFeaturedSongs();
     loadIndonesianSongs();
     loadInternationalSongs();
     renderPlaylists();
+    
+    // Update greeting every minute
+    setInterval(updateGreeting, 60000);
+}
+
+// ============================================
+// Greeting System
+// ============================================
+function updateGreeting() {
+    const hour = new Date().getHours();
+    let greeting;
+    
+    if (hour >= 5 && hour < 11) {
+        greeting = 'Selamat pagi bbyy...';
+    } else if (hour >= 11 && hour < 15) {
+        greeting = 'Selamat siang bbyy...';
+    } else if (hour >= 15 && hour < 18) {
+        greeting = 'Selamat sore bbyy...';
+    } else {
+        greeting = 'Selamat malam bbyy...';
+    }
+    
+    const greetingElement = document.getElementById('greeting-text');
+    if (greetingElement) {
+        greetingElement.textContent = greeting;
+    }
+}
+
+// ============================================
+// Connection Status Update
+// ============================================
+function updateConnectionStatus(connected) {
+    const indicator = document.getElementById('connection-status');
+    const text = document.getElementById('connection-text');
+    
+    if (indicator && text) {
+        indicator.className = 'connection-status ' + (connected ? 'connected' : 'disconnected');
+        text.textContent = connected ? 'Backend Connected' : 'Backend Offline';
+    }
 }
 
 // ============================================
@@ -288,6 +328,20 @@ async function loadFeaturedSongs() {
     const container = document.getElementById('featured-songs');
     container.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
     
+    try {
+        // Try backend first (Deezer API)
+        if (typeof getChartTracks !== 'undefined') {
+            const result = await getChartTracks(12);
+            if (result.success && result.data) {
+                renderSongGrid(result.data, container);
+                return;
+            }
+        }
+    } catch (error) {
+        console.log('Backend not available, using fallback');
+    }
+    
+    // Fallback to LastFM
     const songs = await fetchTopTracks('', 12);
     renderSongGrid(songs, container);
 }
@@ -296,7 +350,20 @@ async function loadIndonesianSongs() {
     const container = document.getElementById('indonesian-songs');
     container.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
     
-    // Create sample Indonesian songs
+    try {
+        // Try backend first - search for Indonesian hits
+        if (typeof searchTracks !== 'undefined') {
+            const result = await searchTracks('indonesia pop hits', 12);
+            if (result.success && result.data && result.data.length > 0) {
+                renderSongGrid(result.data, container);
+                return;
+            }
+        }
+    } catch (error) {
+        console.log('Backend not available, using fallback');
+    }
+    
+    // Fallback: Create sample Indonesian songs
     const indonesianSongs = [
         { id: 'indo-1', title: 'Seperti Bintang', artist: 'Afgan', cover: '', duration: 210, url: null },
         { id: 'indo-2', title: 'Akad', artist: 'Payung Teduh', cover: '', duration: 245, url: null },
@@ -313,6 +380,20 @@ async function loadInternationalSongs() {
     const container = document.getElementById('international-songs');
     container.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
     
+    try {
+        // Try backend first
+        if (typeof searchTracks !== 'undefined') {
+            const result = await searchTracks('international pop', 12);
+            if (result.success && result.data) {
+                renderSongGrid(result.data.slice(0, 6), container);
+                return;
+            }
+        }
+    } catch (error) {
+        console.log('Backend not available, using fallback');
+    }
+    
+    // Fallback to LastFM
     const songs = await fetchTopTracks('', 12);
     renderSongGrid(songs.slice(0, 6), container);
 }
@@ -333,11 +414,22 @@ function renderSongGrid(songs, container) {
         return;
     }
     
-    container.innerHTML = songs.map(song => `
+    container.innerHTML = songs.map(song => {
+        // Handle both Deezer format (cover.medium) and old format (cover as string)
+        let coverUrl = '';
+        if (song.cover) {
+            if (typeof song.cover === 'object' && song.cover.medium) {
+                coverUrl = song.cover.medium;
+            } else if (typeof song.cover === 'string') {
+                coverUrl = song.cover;
+            }
+        }
+        
+        return `
         <div class="song-card" data-song='${JSON.stringify(song).replace(/'/g, "&apos;")}'>
             <div class="song-cover">
-                ${song.cover && song.cover.startsWith('http') 
-                    ? `<img src="${song.cover}" alt="${song.title}">` 
+                ${coverUrl && coverUrl.startsWith('http') 
+                    ? `<img src="${coverUrl}" alt="${song.title}">` 
                     : `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M9 18V5L21 12L9 19V18Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>`}
@@ -352,7 +444,8 @@ function renderSongGrid(songs, container) {
                 <div class="song-artist">${song.artist}</div>
             </div>
         </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 function renderPlaylists() {
@@ -863,7 +956,24 @@ async function searchSongs(query) {
     
     resultsContainer.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
     
-    const results = await searchLastFM(query);
+    let results = [];
+    
+    try {
+        // Try backend first (Deezer API)
+        if (typeof searchTracks !== 'undefined') {
+            const result = await searchTracks(query, 20);
+            if (result.success && result.data) {
+                results = result.data;
+            }
+        }
+    } catch (error) {
+        console.log('Backend search not available, using fallback');
+    }
+    
+    // Fallback to LastFM if no results from backend
+    if (results.length === 0) {
+        results = await searchLastFM(query);
+    }
     
     if (results.length === 0) {
         resultsContainer.innerHTML = `
