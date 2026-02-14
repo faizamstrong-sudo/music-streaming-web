@@ -79,6 +79,75 @@ router.get('/search', async (req, res) => {
     }
 });
 
+// Get stream URL (POST method for flexibility)
+router.post('/get-url', async (req, res) => {
+    try {
+        const { videoId, query } = req.body;
+        
+        if (!videoId && !query) {
+            return res.status(400).json({
+                success: false,
+                error: 'Either videoId or query is required'
+            });
+        }
+        
+        let targetVideoId = videoId;
+        
+        // If query provided, search first (simplified version)
+        if (!targetVideoId && query) {
+            // For simplicity, return search URL
+            return res.json({
+                success: true,
+                message: 'Please provide a specific videoId',
+                searchUrl: `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`
+            });
+        }
+        
+        // Check cache first
+        const cachedUrl = streamCache.get(targetVideoId);
+        if (cachedUrl) {
+            console.log('Stream URL found in cache for:', targetVideoId);
+            return res.json({
+                success: true,
+                data: cachedUrl,
+                cached: true
+            });
+        }
+        
+        // Get fresh stream URL
+        const result = await youtube.getStreamUrl(targetVideoId);
+        
+        if (result.success && result.data) {
+            // Cache the result
+            streamCache.set(targetVideoId, result.data);
+            res.json({
+                ...result,
+                cached: false
+            });
+        } else {
+            res.status(404).json(result);
+        }
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+// Get server status
+router.get('/status', (req, res) => {
+    res.json({
+        success: true,
+        status: 'online',
+        message: 'Stream service is operational',
+        cacheStats: {
+            keys: streamCache.keys().length,
+            stats: streamCache.getStats()
+        }
+    });
+});
+
 // Clear cache (admin endpoint)
 router.post('/cache/clear', (req, res) => {
     streamCache.flushAll();

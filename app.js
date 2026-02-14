@@ -2,19 +2,10 @@
 // All-in-one JavaScript file with complete functionality
 
 // ============================================
-// Configuration & Constants
+// Configuration from config.js is now loaded
+// Additional app-specific constants
 // ============================================
-const CONFIG = {
-    LASTFM_API_KEY: '8d0d5e4f99dd5b9c17cfafea0d3d3d3d', // Public Last.fm API key for demo
-    STORAGE_KEYS: {
-        PLAYLISTS: 'music_playlists',
-        LIKED_SONGS: 'liked_songs',
-        RECENT_PLAYED: 'recently_played',
-        THEME: 'theme_preference',
-        VOLUME: 'volume_preference',
-        QUEUE: 'current_queue'
-    }
-};
+CONFIG.LASTFM_API_KEY = CONFIG.LASTFM_API_KEY || '8d0d5e4f99dd5b9c17cfafea0d3d3d3d'; // Public Last.fm API key for demo
 
 // ============================================
 // State Management

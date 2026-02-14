@@ -129,44 +129,76 @@ A fully functional, production-ready music streaming web application with a mode
 ### Prerequisites
 - Node.js v14 or higher
 - npm or yarn
+- Python 3.7+ (recommended for frontend) or alternative HTTP server
 - Modern web browser (Chrome, Firefox, Safari, Edge)
 
 ### Installation & Running
 
-#### Option 1: Automated Start (Recommended)
+#### Option 1: Automated Setup & Start (Recommended)
 
-**Start Backend:**
+**1. Run Setup Wizard:**
 ```bash
-cd backend
-chmod +x start.sh
-./start.sh
+npm run setup
+# or
+node scripts/setup.js
 ```
 
-**Start Frontend (in a new terminal):**
-```bash
-chmod +x start-frontend.sh
-./start-frontend.sh
+This will:
+- Check all prerequisites (Node.js, npm, Python)
+- Install backend dependencies
+- Create .env configuration file
+- Verify project structure
+
+**2. Start the Application:**
+
+**Windows:**
+```batch
+scripts\start-windows.bat
+# or
+powershell -ExecutionPolicy Bypass -File scripts\start-powershell.ps1
 ```
+
+**Mac/Linux:**
+```bash
+chmod +x scripts/start-unix.sh
+./scripts/start-unix.sh
+```
+
+The script will automatically:
+- Start the backend server (port 3000)
+- Start the frontend server (port 8000)
+- Open your browser to http://localhost:8000
+
+**To stop:** Press `Ctrl+C` in the terminal
 
 #### Option 2: Manual Start
 
-**1. Start Backend Server:**
+**1. Install Backend Dependencies:**
 ```bash
 cd backend
 npm install
+cd ..
+```
+
+**2. Start Backend Server (Terminal 1):**
+```bash
+cd backend
 npm start
 ```
 
-**2. Start Frontend Server (in a new terminal):**
+**3. Start Frontend Server (Terminal 2):**
 ```bash
 # Using Python 3
 python3 -m http.server 8000
+
+# Or using Python 2
+python -m SimpleHTTPServer 8000
 
 # Or using Node.js
 npx http-server -p 8000
 ```
 
-**3. Access the application:**
+**4. Access the application:**
 - Frontend: `http://localhost:8000`
 - Backend API: `http://localhost:3000`
 - Health Check: `http://localhost:3000/health`
@@ -175,9 +207,18 @@ npx http-server -p 8000
 
 1. Open `http://localhost:8000` in your browser
 2. Check "Backend Connected" indicator in top-right
-3. Browse featured songs and Indonesian hits
-4. Try searching for music
-5. Toggle between dark and light themes (button in bottom-left)
+3. Verify time-based greeting: "Selamat pagi/siang/sore/malam bbyy..."
+4. Browse featured songs and Indonesian hits
+5. Try searching for music
+6. Toggle between dark and light themes (button in bottom-left)
+
+### Need Help?
+
+See [TUTORIAL.md](TUTORIAL.md) for:
+- Detailed installation guide
+- Step-by-step usage instructions
+- Troubleshooting common issues
+- FAQs and solutions
 
 ## 📁 Project Structure
 
@@ -186,27 +227,38 @@ music-streaming-web/
 ├── index.html              # Main HTML with semantic structure
 ├── styles.css              # Javanese-themed CSS with batik patterns
 ├── app.js                  # Frontend JavaScript with greeting system
-├── api-client.js           # Backend API client
+├── api.js                  # Backend API client (renamed from api-client.js)
+├── config.js               # Frontend configuration
+├── package.json            # Root package.json with scripts
 ├── start-frontend.sh       # Frontend startup script
-├── README.md              # This file
+├── TUTORIAL.md             # Comprehensive tutorial guide
+├── README.md               # This file
 │
-├── backend/               # Node.js + Express Backend
-│   ├── package.json       # Backend dependencies
-│   ├── server.js          # Express server setup
-│   ├── start.sh           # Backend startup script
-│   ├── README.md          # Backend documentation
+├── backend/                # Node.js + Express Backend
+│   ├── package.json        # Backend dependencies
+│   ├── server.js           # Express server setup
+│   ├── start.sh            # Backend startup script
+│   ├── .env                # Environment variables (created by setup)
+│   ├── README.md           # Backend documentation
 │   │
-│   ├── routes/            # API Routes
-│   │   ├── songs.js       # Deezer API routes
-│   │   └── stream.js      # YouTube streaming routes
+│   ├── routes/             # API Routes
+│   │   ├── songs.js        # Deezer API routes (trending, recommendations)
+│   │   └── stream.js       # YouTube streaming routes (get-url, status)
 │   │
-│   ├── controllers/       # Business Logic
-│   │   ├── deezer.js      # Deezer API integration
-│   │   └── youtube.js     # YouTube stream extraction
+│   ├── controllers/        # Business Logic
+│   │   ├── deezer.js       # Deezer API integration
+│   │   └── youtube.js      # YouTube stream extraction (ytdl-core)
 │   │
-│   └── utils/             # Helper utilities
+│   └── utils/              # Helper utilities
+│       └── cache.js        # Caching utility (stream & API cache)
 │
-└── .gitignore            # Git ignore rules
+├── scripts/                # Startup & Setup Scripts
+│   ├── setup.js            # Automated setup wizard
+│   ├── start-windows.bat   # Windows batch startup script
+│   ├── start-unix.sh       # Mac/Linux startup script
+│   └── start-powershell.ps1 # PowerShell startup script
+│
+└── .gitignore              # Git ignore rules
 ```
 
 ## 🔧 Technical Stack
@@ -266,12 +318,17 @@ music-streaming-web/
 ### Songs (Deezer)
 - `GET /api/songs/search?q={query}&limit={limit}` - Search tracks
 - `GET /api/songs/charts?limit={limit}` - Get chart tracks
+- `GET /api/songs/trending?limit={limit}` - Get trending tracks ✨ NEW
+- `GET /api/songs/recommendations?limit={limit}` - Get recommended tracks ✨ NEW
+- `GET /api/songs/trending-id?limit={limit}` - Get trending Indonesian tracks ✨ NEW
 - `GET /api/songs/genre/{genreId}?limit={limit}` - Get tracks by genre
 - `GET /api/songs/{trackId}` - Get track details
 - `GET /api/songs/artist/{artistId}/top?limit={limit}` - Get artist's top tracks
 
 ### Streaming (YouTube)
 - `GET /api/stream/youtube/{videoId}` - Get stream URL for video
+- `POST /api/stream/get-url` - Get stream URL (with query or videoId) ✨ NEW
+- `GET /api/stream/status` - Check streaming service status ✨ NEW
 - `GET /api/stream/info/{videoId}` - Get video information
 - `GET /api/stream/search?q={query}` - Search YouTube
 - `POST /api/stream/cache/clear` - Clear stream cache

@@ -38,6 +38,49 @@ router.get('/charts', async (req, res) => {
     }
 });
 
+// Get trending tracks
+router.get('/trending', async (req, res) => {
+    try {
+        const { limit } = req.query;
+        const result = await deezer.getChartTracks(parseInt(limit) || 25);
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+// Get recommendations
+router.get('/recommendations', async (req, res) => {
+    try {
+        const { limit } = req.query;
+        const result = await deezer.getChartTracks(parseInt(limit) || 25);
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+// Get trending Indonesian songs
+router.get('/trending-id', async (req, res) => {
+    try {
+        const { limit } = req.query;
+        // Search for Indonesian music
+        const result = await deezer.searchTracks('Indonesia music terpopuler', parseInt(limit) || 25);
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
 // Get tracks by genre
 router.get('/genre/:genreId', async (req, res) => {
     try {
